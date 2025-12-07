@@ -13,6 +13,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle
 } from '@/shared/components/ui/alert-dialog';
+import { ActionButton } from '@/shared/components/ui/ActionButton';
 // import yodaCage from "./yodaCage.png";
 
 // Simple Card component to replace the missing UI component
@@ -95,17 +96,16 @@ export default function SimpleProgress() {
           Your Progress
         </h1>
 
-        <button
+        <ActionButton
           onClick={() => setShowResetModal(true)}
-          className={clsx(
-            'py-2 px-4',
-            'rounded-2xl duration-200 hover:cursor-pointer bg-[var(--secondary-color)] border-b-4 border-[var(--secondary-color-accent)] text-[var(--background-color)]',
-            'flex items-center gap-2 text-sm'
-          )}
+          colorScheme='secondary'
+          borderColorScheme='secondary'
+          borderBottomThickness={4}
+          className='py-2 px-4 w-auto text-sm'
         >
           <Trash className='h-4 w-4' />
           Reset Progress
-        </button>
+        </ActionButton>
       </div>
 
       {/* Confirmation Dialog */}

@@ -18,6 +18,7 @@ import {
 } from '@/shared/lib/unitSets';
 import { useClick } from '@/shared/hooks/useAudio';
 import { CircleCheck, Trash } from 'lucide-react';
+import { ActionButton } from '@/shared/components/ui/ActionButton';
 import { useMemo } from 'react';
 
 type CollectionLevel = 'n5' | 'n4' | 'n3' | 'n2' | 'n1';
@@ -129,25 +130,25 @@ const CollectionSelector = () => {
           const isSelected = collection.name === selectedCollection;
 
           return (
-            <button
+            <ActionButton
               key={collection.name}
               onClick={() => handleCollectionSelect(collection.name)}
+              colorScheme={isSelected ? 'main' : undefined}
+              borderColorScheme={isSelected ? 'main' : undefined}
+              borderBottomThickness={isSelected ? 6 : 0}
               className={clsx(
-                'relative flex-1 px-4 py-3 rounded-2xl transition-colors duration-0 hover:cursor-pointer',
-                'flex flex-col items-center justify-center gap-1',
+                'flex-1 px-4 py-3 flex-col gap-1',
                 isSelected
-                  ? 'bg-[var(--main-color)]/80 text-[var(--background-color)] border-b-6 border-[var(--main-color-accent)]'
-                  : 'text-[var(--main-color)]  hover:bg-[var(--border-color)]/50'
+                  ? 'bg-[var(--main-color)]/80'
+                  : 'bg-transparent text-[var(--main-color)] hover:bg-[var(--border-color)]/50'
               )}
             >
               <div className='flex items-center gap-2'>
-                <span className='text-xl '>{collection.displayName}</span>
+                <span className='text-xl'>{collection.displayName}</span>
                 <span
                   className={clsx(
-                    'text-xs  px-1.5 py-0.5 rounded',
-                    isSelected
-                      ? 'bg-[var(--border-color)] text-[var(--secondary-color)]'
-                      : 'bg-[var(--border-color)] text-[var(--secondary-color)]'
+                    'text-xs px-1.5 py-0.5 rounded',
+                    'bg-[var(--border-color)] text-[var(--secondary-color)]'
                   )}
                 >
                   {collection.jlpt}
@@ -163,7 +164,7 @@ const CollectionSelector = () => {
               >
                 {collection.subtitle}
               </span>
-            </button>
+            </ActionButton>
           );
         })}
       </div>
@@ -194,17 +195,16 @@ const CollectionSelector = () => {
           </span>
         </div>
 
-        <button
-          className={clsx(
-            'py-3 px-16 w-full',
-            'rounded-2xl duration-275 hover:cursor-pointer bg-[var(--secondary-color)]/80 border-b-8 border-[var(--secondary-color-accent)] text-[var(--background-color)]',
-            'flex justify-center'
-          )}
+        <ActionButton
+          colorScheme='secondary'
+          borderColorScheme='secondary'
+          borderBottomThickness={8}
+          className='py-3 px-16 bg-[var(--secondary-color)]/80'
           onClick={handleClear}
           aria-label='Clear selected levels'
         >
           <Trash size={32} />
-        </button>
+        </ActionButton>
       </div>
     </div>
   );

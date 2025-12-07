@@ -6,6 +6,7 @@ import { kana } from '@/features/Kana/data/kana';
 import useKanaStore from '@/features/Kana/store/useKanaStore';
 import usePreferencesStore from '@/features/Preferences/store/usePreferencesStore';
 import { useClick } from '@/shared/hooks/useAudio';
+import { ActionButton } from '@/shared/components/ui/ActionButton';
 
 const FINAL_CHARACTERS = [
   'h.b.w',
@@ -73,7 +74,7 @@ const Subset = ({ sliceRange, subgroup }: SubsetProps) => {
   };
 
   return (
-    <fieldset className='font-bold flex flex-col items-start gap-1'>
+    <fieldset className=' flex flex-col items-start gap-1'>
       {kanaGroups.map((group, i) => {
         const isFocused = focusedRow === group.groupName;
 
@@ -135,15 +136,7 @@ const Subset = ({ sliceRange, subgroup }: SubsetProps) => {
 
       {/* Select All Button */}
       <div className='flex flex-row gap-2 w-full'>
-        <button
-          type='button'
-          className={clsx(
-            'p-2 font-normal text-lg w-full hover:cursor-pointer',
-            'rounded-2xl bg-[var(--main-color)] text-[var(--background-color)]',
-            'flex flex-row justify-center items-center gap-1.5',
-            'border-b-6 border-[var(--main-color-accent)]'
-            // 'border-r-3 border-l-3 border-t-2'
-          )}
+        <ActionButton
           onClick={e => {
             e.currentTarget.blur();
             selectAllInSubset();
@@ -151,7 +144,7 @@ const Subset = ({ sliceRange, subgroup }: SubsetProps) => {
         >
           <span>select all {subgroup.slice(1).toLowerCase()}</span>
           <MousePointer size={22} />
-        </button>
+        </ActionButton>
       </div>
     </fieldset>
   );

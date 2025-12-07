@@ -8,6 +8,7 @@ import clsx from 'clsx';
 import { useClick } from '@/shared/hooks/useAudio';
 import { useShallow } from 'zustand/react/shallow';
 import { Link } from '@/core/i18n/routing';
+import { ActionButton } from '@/shared/components/ui/ActionButton';
 
 interface GameModesProps {
   isOpen: boolean;

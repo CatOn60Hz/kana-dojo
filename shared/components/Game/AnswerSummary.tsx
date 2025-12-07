@@ -7,6 +7,7 @@ import { Dispatch, SetStateAction, useRef, useEffect } from 'react';
 import { useClick } from '@/shared/hooks/useAudio';
 import FuriganaText from '@/shared/components/FuriganaText';
 import usePreferencesStore from '@/features/Preferences/store/usePreferencesStore';
+import { ActionButton } from '@/shared/components/ui/ActionButton';
 
 // Type guard
 const isKanjiObj = (obj: IKanjiObj | IVocabObj): obj is IKanjiObj => {
@@ -38,24 +39,16 @@ const ContinueButton = ({
         'flex justify-center items-center'
       )}
     >
-      <button
+      <ActionButton
         ref={buttonRef}
-        className={clsx(
-          'text-xl font-medium py-4 px-16 rounded-3xl duration-250 hover:cursor-pointer',
-
-          'w-full md:w-1/2',
-
-          // buttonBorderStyles,
-          'flex flex-row justify-center items-end gap-2 ',
-          'text-[var(--background-color)] bg-[var(--main-color)]',
-          'border-b-8 border-[var(--main-color-accent)] rounded-2xl'
-        )}
+        borderBottomThickness={8}
+        className='text-xl font-medium py-4 px-16 w-full md:w-1/2'
         onClick={onClick}
         disabled={disabled}
       >
         <span>continue</span>
-        <CircleArrowRight className='' />
-      </button>
+        <CircleArrowRight />
+      </ActionButton>
     </div>
   );
 };

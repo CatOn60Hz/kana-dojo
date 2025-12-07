@@ -17,6 +17,7 @@ import {
   type LucideIcon
 } from 'lucide-react';
 import ProgressBar from './ProgressBar';
+import { ActionButton } from '@/shared/components/ui/ActionButton';
 
 // Game mode icon configuration
 const GAME_MODE_ICONS: Record<
@@ -130,18 +131,13 @@ const Return = ({ isHidden, href, gameMode }: ReturnProps) => {
           <StatItem icon={Flame} value={currentStreak} />
           <StatItem icon={Star} value={numStars} />
 
-          <button
-            className={clsx(
-              'p-2 md:px-6 text-xl flex flex-row justify-center items-center gap-2',
-              'hover:cursor-pointer duration-275 rounded-xl',
-              'transition-all ease-in-out border-b-6 border-[var(--main-color-accent)]',
-              'bg-[var(--main-color)]',
-              'text-[var(--background-color)]'
-            )}
+          <ActionButton
+            borderRadius='xl'
+            className='p-2 md:px-6 text-xl w-auto'
             onClick={handleShowStats}
           >
             <ChartSpline size={24} />
-          </button>
+          </ActionButton>
         </div>
       </div>
     </div>
