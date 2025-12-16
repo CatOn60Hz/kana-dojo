@@ -10,20 +10,19 @@ interface TranslatorOutputProps {
   romanization?: string | null;
   targetLanguage: Language;
   isLoading: boolean;
-  sourceLanguage: Language;
 }
 
 export default function TranslatorOutput({
   translation,
   romanization,
   targetLanguage,
-  isLoading,
-  sourceLanguage
+  isLoading
 }: TranslatorOutputProps) {
   const [copied, setCopied] = useState(false);
 
-  // Show romanization when source is Japanese (translating from Japanese)
-  const showRomanization = sourceLanguage === 'ja' && romanization;
+  // Show romanization when target is Japanese (translating TO Japanese)
+  // This displays romaji pronunciation below the Japanese translation
+  const showRomanization = targetLanguage === 'ja' && romanization;
 
   const handleCopy = useCallback(async () => {
     if (!translation) return;
@@ -111,30 +110,17 @@ export default function TranslatorOutput({
             </span>
           </div>
         ) : translation ? (
-          <div className='flex flex-col gap-4'>
+          <div className='flex flex-col'>
             {/* Main translation */}
-            <p className='text-base sm:text-lg whitespace-pre-wrap break-words leading-relaxed'>
+            <p className='text-xl sm:text-2xl whitespace-pre-wrap break-words leading-relaxed font-medium'>
               {translation}
             </p>
 
-            {/* Romanization (when translating from Japanese) */}
+            {/* Romaji pronunciation (when translating TO Japanese) */}
             {showRomanization && (
-              <div
-                className={cn(
-                  'pt-4 mt-2 border-t border-[var(--border-color)]',
-                  'bg-[var(--main-color)]/5 -mx-4 -mb-4 px-4 pb-4 rounded-b-xl'
-                )}
-              >
-                <div className='flex items-center gap-2 mb-2'>
-                  <FileText className='h-3.5 w-3.5 text-[var(--secondary-color)]' />
-                  <span className='text-xs font-medium text-[var(--secondary-color)] uppercase tracking-wider'>
-                    Romanization (Romaji)
-                  </span>
-                </div>
-                <p className='text-sm text-[var(--secondary-color)] whitespace-pre-wrap break-words leading-relaxed'>
-                  {romanization}
-                </p>
-              </div>
+              <p className='mt-2 text-sm sm:text-base text-[var(--secondary-color)] whitespace-pre-wrap break-words leading-relaxed italic'>
+                {romanization}
+              </p>
             )}
           </div>
         ) : (

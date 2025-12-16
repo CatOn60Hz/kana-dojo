@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { toRomaji, isJapanese } from 'wanakana';
 
 interface TranslationRequestBody {
   text: string;
@@ -13,6 +14,18 @@ interface GoogleTranslateResponse {
       detectedSourceLanguage?: string;
     }>;
   };
+}
+
+/**
+ * Generate romanization (romaji) for Japanese text
+ * Uses wanakana for hiragana/katakana and passes through kanji as-is
+ */
+function generateRomanization(japaneseText: string): string {
+  if (!japaneseText || !isJapanese(japaneseText, { passKanji: true })) {
+    return '';
+  }
+  // toRomaji converts hiragana/katakana to romaji, kanji passes through
+  return toRomaji(japaneseText, { upcaseKatakana: false });
 }
 
 /**
@@ -156,9 +169,16 @@ export async function POST(request: NextRequest) {
     const data = (await googleResponse.json()) as GoogleTranslateResponse;
     const translation = data.data.translations[0];
 
+    // Generate romanization when translating TO Japanese
+    const romanization =
+      targetLanguage === 'ja'
+        ? generateRomanization(translation.translatedText)
+        : undefined;
+
     return NextResponse.json({
       translatedText: translation.translatedText,
-      detectedSourceLanguage: translation.detectedSourceLanguage
+      detectedSourceLanguage: translation.detectedSourceLanguage,
+      romanization
     });
   } catch (error) {
     console.error('Translation API error:', error);

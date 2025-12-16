@@ -152,7 +152,6 @@ export default function TranslatorPage({ locale = 'en' }: TranslatorPageProps) {
               translation={translatedText}
               romanization={romanization}
               targetLanguage={targetLanguage}
-              sourceLanguage={sourceLanguage}
               isLoading={isLoading}
             />
           </div>

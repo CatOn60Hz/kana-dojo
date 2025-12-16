@@ -33,22 +33,22 @@ const translationEntryArb = fc.record({
 });
 
 /**
- * **Feature: japanese-translator, Property 4: Japanese input shows romanization**
- * For any translation where the source language is Japanese, the output should
- * include a non-empty romanization string.
+ * **Feature: japanese-translator, Property 4: Japanese output shows romanization**
+ * For any translation where the target language is Japanese, the output should
+ * include a non-empty romanization string (romaji pronunciation).
  * **Validates: Requirements 2.5**
  */
-describe('Property 4: Japanese input shows romanization', () => {
+describe('Property 4: Japanese output shows romanization', () => {
   // Helper function that determines if romanization should be shown
   // This mirrors the logic in TranslatorOutput component
   const shouldShowRomanization = (
-    sourceLanguage: Language,
+    targetLanguage: Language,
     romanization: string | null | undefined
   ): boolean => {
-    return sourceLanguage === 'ja' && !!romanization;
+    return targetLanguage === 'ja' && !!romanization;
   };
 
-  it('romanization is shown when source is Japanese and romanization exists', () => {
+  it('romanization is shown when target is Japanese and romanization exists', () => {
     fc.assert(
       fc.property(
         fc.string({ minLength: 1, maxLength: 100 }), // romanization
@@ -61,7 +61,7 @@ describe('Property 4: Japanese input shows romanization', () => {
     );
   });
 
-  it('romanization is not shown when source is English', () => {
+  it('romanization is not shown when target is English', () => {
     fc.assert(
       fc.property(
         fc.option(fc.string({ minLength: 1, maxLength: 100 }), { nil: null }),
@@ -92,12 +92,12 @@ describe('Property 4: Japanese input shows romanization', () => {
       fc.property(
         languageArb,
         fc.option(fc.string({ minLength: 0, maxLength: 100 }), { nil: null }),
-        (sourceLanguage: Language, romanization: string | null) => {
-          const result = shouldShowRomanization(sourceLanguage, romanization);
+        (targetLanguage: Language, romanization: string | null) => {
+          const result = shouldShowRomanization(targetLanguage, romanization);
 
-          // Should only be true when source is Japanese AND romanization is non-empty
+          // Should only be true when target is Japanese AND romanization is non-empty
           const expected =
-            sourceLanguage === 'ja' &&
+            targetLanguage === 'ja' &&
             romanization !== null &&
             romanization !== undefined &&
             romanization.length > 0;
@@ -764,9 +764,10 @@ describe('Property 1: Translation produces result', () => {
 
           // Simulate receiving a successful translation response
           // This mimics what the translate action does on success
+          // Romanization is now shown when target is Japanese (not source)
           useTranslatorStore.setState({
             translatedText: response.translatedText,
-            romanization: sourceLang === 'ja' ? response.translatedText : null,
+            romanization: targetLang === 'ja' ? response.translatedText : null,
             isLoading: false,
             error: null
           });
