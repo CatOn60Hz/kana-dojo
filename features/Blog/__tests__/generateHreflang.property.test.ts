@@ -60,7 +60,7 @@ describe('Property 12: Hreflang Tags for Multi-Locale Posts', () => {
 
         for (const locale of locales) {
           const tag = tags.find(t => t.hreflang === locale);
-          expect(tag?.href).toBe(`${BASE_URL}/${locale}/blog/${slug}`);
+          expect(tag?.href).toBe(`${BASE_URL}/${locale}/academy/${slug}`);
         }
       }),
       { numRuns: 100 }
@@ -77,7 +77,7 @@ describe('Property 12: Hreflang Tags for Multi-Locale Posts', () => {
 
           const xDefaultTag = tags.find(t => t.hreflang === 'x-default');
           expect(xDefaultTag).toBeDefined();
-          expect(xDefaultTag?.href).toBe(`${BASE_URL}/en/blog/${slug}`);
+          expect(xDefaultTag?.href).toBe(`${BASE_URL}/en/academy/${slug}`);
         }
       ),
       { numRuns: 100 }
@@ -107,7 +107,7 @@ describe('Property 12: Hreflang Tags for Multi-Locale Posts', () => {
 
         for (const tag of tags) {
           expect(tag.href).toMatch(
-            /^https:\/\/kanadojo\.com\/(en|es|ja)\/blog\/.+$/
+            /^https:\/\/kanadojo\.com\/(en|es|ja)\/academy\/.+$/
           );
         }
       }),

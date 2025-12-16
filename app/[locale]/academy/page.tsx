@@ -13,36 +13,36 @@ export function generateStaticParams() {
 }
 
 /**
- * Generate SEO metadata for the blog listing page
+ * Generate SEO metadata for the academy listing page
  */
 export const metadata: Metadata = {
-  title: 'Blog - Japanese Learning Articles | KanaDojo',
+  title: 'Academy - Japanese Learning Articles | KanaDojo',
   description:
     'Explore our collection of Japanese learning articles covering Hiragana, Katakana, Kanji, vocabulary, grammar, and Japanese culture. Free educational content for all levels.',
   openGraph: {
-    title: 'Blog - Japanese Learning Articles | KanaDojo',
+    title: 'Academy - Japanese Learning Articles | KanaDojo',
     description:
       'Explore our collection of Japanese learning articles covering Hiragana, Katakana, Kanji, vocabulary, grammar, and Japanese culture.',
-    url: 'https://kanadojo.com/en/blog',
+    url: 'https://kanadojo.com/academy',
     type: 'website'
   },
   alternates: {
-    canonical: 'https://kanadojo.com/en/blog'
+    canonical: 'https://kanadojo.com/academy'
   }
 };
 
-interface BlogPageProps {
+interface AcademyPageProps {
   params: Promise<{ locale: string }>;
 }
 
 /**
- * Blog Listing Page
+ * Academy Listing Page
  * Displays all published blog posts sorted by date with category filtering.
  * Uses static generation for optimal SEO performance.
  *
  * _Requirements: 2.1, 2.4_
  */
-export default async function BlogPage({ params }: BlogPageProps) {
+export default async function AcademyPage({ params }: AcademyPageProps) {
   const { locale } = await params;
 
   // Fetch all posts for the current locale
@@ -53,7 +53,7 @@ export default async function BlogPage({ params }: BlogPageProps) {
       {/* Page Header */}
       <header className='mb-8'>
         <h1 className='mb-4 text-3xl font-bold text-[var(--main-color)] md:text-4xl'>
-          Blog
+          Academy
         </h1>
         <p className='text-lg text-[var(--secondary-color)]'>
           Explore our collection of Japanese learning articles covering

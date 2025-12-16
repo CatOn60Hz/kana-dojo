@@ -36,7 +36,7 @@ export default {
       '/kanji': 0.9,
       '/vocabulary': 0.9,
       '/translate': 0.9,
-      '/blog': 0.8,
+      '/academy': 0.8,
       '/preferences': 0.6,
       '/achievements': 0.7,
       '/progress': 0.7
@@ -48,22 +48,23 @@ export default {
       '/kanji': 'weekly',
       '/vocabulary': 'weekly',
       '/translate': 'daily',
-      '/blog': 'weekly',
+      '/academy': 'weekly',
       '/preferences': 'monthly',
       '/achievements': 'weekly',
       '/progress': 'weekly'
     };
 
-    // Check if this is a blog post URL (matches /blog/[slug] pattern)
-    const isBlogPost =
-      /^\/blog\/[^/]+$/.test(path) || /^\/[a-z]{2}\/blog\/[^/]+$/.test(path);
+    // Check if this is an academy post URL (matches /academy/[slug] pattern)
+    const isAcademyPost =
+      /^\/academy\/[^/]+$/.test(path) ||
+      /^\/[a-z]{2}\/academy\/[^/]+$/.test(path);
 
     // Determine priority and changefreq
     let priority = priorities[path] || config.priority;
     let changefreq = changefreqs[path] || config.changefreq;
 
-    // Blog posts get priority 0.8 and weekly changefreq
-    if (isBlogPost) {
+    // Academy posts get priority 0.8 and weekly changefreq
+    if (isAcademyPost) {
       priority = 0.8;
       changefreq = 'weekly';
     }

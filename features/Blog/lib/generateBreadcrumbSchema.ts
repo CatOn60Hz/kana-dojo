@@ -27,8 +27,8 @@ export interface BreadcrumbSchemaOptions {
   baseUrl?: string;
   /** Home page label */
   homeLabel?: string;
-  /** Blog listing page label */
-  blogLabel?: string;
+  /** Academy listing page label */
+  academyLabel?: string;
 }
 
 /**
@@ -52,7 +52,7 @@ export function generateBreadcrumbSchema(
 ): BreadcrumbSchema {
   const baseUrl = options.baseUrl ?? BASE_URL;
   const homeLabel = options.homeLabel ?? 'Home';
-  const blogLabel = options.blogLabel ?? 'Blog';
+  const academyLabel = options.academyLabel ?? 'Academy';
 
   const schema: BreadcrumbSchema = {
     '@context': 'https://schema.org',
@@ -67,14 +67,14 @@ export function generateBreadcrumbSchema(
       {
         '@type': 'ListItem',
         position: 2,
-        name: blogLabel,
-        item: `${baseUrl}/${post.locale}/blog`
+        name: academyLabel,
+        item: `${baseUrl}/${post.locale}/academy`
       },
       {
         '@type': 'ListItem',
         position: 3,
         name: post.title,
-        item: `${baseUrl}/${post.locale}/blog/${post.slug}`
+        item: `${baseUrl}/${post.locale}/academy/${post.slug}`
       }
     ]
   };

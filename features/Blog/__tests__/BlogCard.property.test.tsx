@@ -213,11 +213,11 @@ describe('Property 5: Blog Card Contains Required Fields', () => {
     );
   });
 
-  it('links to the correct blog post URL', () => {
+  it('links to the correct academy post URL', () => {
     fc.assert(
       fc.property(blogPostMetaArb, (meta: BlogPostMeta) => {
         const { container, unmount } = render(<BlogCard post={meta} />);
-        const link = container.querySelector(`a[href="/blog/${meta.slug}"]`);
+        const link = container.querySelector(`a[href="/academy/${meta.slug}"]`);
         expect(link).not.toBeNull();
         unmount();
       }),

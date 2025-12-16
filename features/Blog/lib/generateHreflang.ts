@@ -53,14 +53,14 @@ export function generateHreflang(
   // Generate hreflang tags for each available locale
   const tags: HreflangTag[] = availableLocales.map(locale => ({
     hreflang: LOCALE_TO_HREFLANG[locale],
-    href: `${baseUrl}/${locale}/blog/${slug}`
+    href: `${baseUrl}/${locale}/academy/${slug}`
   }));
 
   // Add x-default pointing to English version if English is available
   if (availableLocales.includes('en')) {
     tags.push({
       hreflang: 'x-default',
-      href: `${baseUrl}/en/blog/${slug}`
+      href: `${baseUrl}/en/academy/${slug}`
     });
   }
 

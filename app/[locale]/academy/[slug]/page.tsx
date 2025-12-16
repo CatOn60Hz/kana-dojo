@@ -17,7 +17,7 @@ import { StructuredData } from '@/shared/components/SEO/StructuredData';
 import { routing, type Locale } from '@/core/i18n/routing';
 import type { Locale as BlogLocale } from '@/features/Blog';
 
-interface BlogPostPageProps {
+interface AcademyPostPageProps {
   params: Promise<{ locale: string; slug: string }>;
 }
 
@@ -48,14 +48,14 @@ export async function generateStaticParams() {
  */
 export async function generateMetadata({
   params
-}: BlogPostPageProps): Promise<Metadata> {
+}: AcademyPostPageProps): Promise<Metadata> {
   const { locale, slug } = await params;
   const post = getBlogPost(slug, locale as BlogLocale);
 
   if (!post) {
     return {
-      title: 'Post Not Found | KanaDojo Blog',
-      description: 'The requested blog post could not be found.'
+      title: 'Post Not Found | KanaDojo Academy',
+      description: 'The requested article could not be found.'
     };
   }
 
@@ -82,13 +82,15 @@ export async function generateMetadata({
 }
 
 /**
- * Individual Blog Post Page
+ * Individual Academy Post Page
  * Renders a full blog post with MDX content, structured data,
  * and related posts. Uses static generation for optimal SEO.
  *
  * _Requirements: 3.1, 3.4, 4.1, 4.2, 4.3_
  */
-export default async function BlogPostPage({ params }: BlogPostPageProps) {
+export default async function AcademyPostPage({
+  params
+}: AcademyPostPageProps) {
   const { locale, slug } = await params;
   const post = getBlogPost(slug, locale as BlogLocale);
 

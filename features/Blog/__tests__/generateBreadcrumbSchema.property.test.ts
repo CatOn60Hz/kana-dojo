@@ -143,9 +143,9 @@ describe('Property 11: Breadcrumb Schema Correctly Structured', () => {
     fc.assert(
       fc.property(blogPostArb, (post: BlogPost) => {
         const schema = generateBreadcrumbSchema(post, { baseUrl: BASE_URL });
-        const blogItem = schema.itemListElement[1];
-        expect(blogItem.name).toBe('Blog');
-        expect(blogItem.item).toBe(`${BASE_URL}/${post.locale}/blog`);
+        const academyItem = schema.itemListElement[1];
+        expect(academyItem.name).toBe('Academy');
+        expect(academyItem.item).toBe(`${BASE_URL}/${post.locale}/academy`);
       }),
       { numRuns: 100 }
     );
@@ -158,7 +158,7 @@ describe('Property 11: Breadcrumb Schema Correctly Structured', () => {
         const postItem = schema.itemListElement[2];
         expect(postItem.name).toBe(post.title);
         expect(postItem.item).toBe(
-          `${BASE_URL}/${post.locale}/blog/${post.slug}`
+          `${BASE_URL}/${post.locale}/academy/${post.slug}`
         );
       }),
       { numRuns: 100 }

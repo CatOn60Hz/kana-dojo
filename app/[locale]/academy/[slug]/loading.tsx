@@ -1,5 +1,5 @@
 import Loader from '@/shared/components/Skeletons/Loader';
 
-export default function BlogLoaderPage() {
+export default function AcademyPostLoaderPage() {
   return <Loader />;
 }

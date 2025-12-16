@@ -46,7 +46,7 @@ export function BlogCard({ post, className }: BlogCardProps) {
       data-testid='blog-card'
     >
       <Link
-        href={`/blog/${post.slug}`}
+        href={`/academy/${post.slug}`}
         className='absolute inset-0 z-10'
         aria-label={`Read more about ${post.title}`}
       >
