@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { kana } from '@/features/Kana/data/kana';
 import useKanaStore from '@/features/Kana/store/useKanaStore';
 import { CircleCheck, CircleX, CircleArrowRight } from 'lucide-react';
@@ -51,14 +51,23 @@ const InputGame = ({ isHidden, isReverse = false }: InputGameProps) => {
 
   const kanaGroupIndices = useKanaStore(state => state.kanaGroupIndices);
 
-  const selectedKana = kanaGroupIndices.map(i => kana[i].kana).flat();
-  const selectedRomaji = kanaGroupIndices.map(i => kana[i].romanji).flat();
+  const selectedKana = useMemo(
+    () => kanaGroupIndices.map(i => kana[i].kana).flat(),
+    [kanaGroupIndices]
+  );
+  const selectedRomaji = useMemo(
+    () => kanaGroupIndices.map(i => kana[i].romanji).flat(),
+    [kanaGroupIndices]
+  );
 
   // Create mapping pairs based on mode
-  const selectedPairs = Object.fromEntries(
-    isReverse
-      ? selectedRomaji.map((key, i) => [key, selectedKana[i]])
-      : selectedKana.map((key, i) => [key, selectedRomaji[i]])
+  const selectedPairs = useMemo(
+    () => Object.fromEntries(
+      isReverse
+        ? selectedRomaji.map((key, i) => [key, selectedKana[i]])
+        : selectedKana.map((key, i) => [key, selectedRomaji[i]])
+    ),
+    [isReverse, selectedRomaji, selectedKana]
   );
 
   // State for characters - uses weighted selection for adaptive learning

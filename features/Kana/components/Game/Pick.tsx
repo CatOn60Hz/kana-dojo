@@ -1,6 +1,6 @@
 'use client';
 import clsx from 'clsx';
-import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import { useState, useEffect, useRef, useMemo, useCallback, memo } from 'react';
 import { kana } from '@/features/Kana/data/kana';
 import useKanaStore from '@/features/Kana/store/useKanaStore';
 import { CircleCheck, CircleX } from 'lucide-react';
@@ -22,6 +22,50 @@ const random = new Random();
 
 // Get the global adaptive selector for weighted character selection
 const adaptiveSelector = getGlobalAdaptiveSelector();
+
+// Memoized option button component to prevent unnecessary re-renders
+interface OptionButtonProps {
+  variantChar: string;
+  index: number;
+  isWrong: boolean;
+  onClick: (char: string) => void;
+  buttonRef?: (elem: HTMLButtonElement | null) => void;
+}
+
+const OptionButton = memo(({ variantChar, index, isWrong, onClick, buttonRef }: OptionButtonProps) => {
+  return (
+    <button
+      ref={buttonRef}
+      key={variantChar + index}
+      type="button"
+      disabled={isWrong}
+      className={clsx(
+        'text-5xl font-semibold pb-6 pt-3 w-full sm:w-1/5 flex flex-row justify-center items-center gap-1 relative',
+        buttonBorderStyles,
+        'border-b-4 ',
+        isWrong &&
+          'hover:bg-[var(--card-color)] hover:border-[var(--border-color)] text-[var(--border-color)]',
+        !isWrong &&
+          'text-[var(--secondary-color)] border-[var(--secondary-color)]/50 hover:border-[var(--secondary-color)]'
+      )}
+      onClick={() => onClick(variantChar)}
+    >
+      <span>{variantChar}</span>
+      <span
+        className={clsx(
+          'absolute right-4 top-1/2 -translate-y-1/2 hidden lg:inline-flex h-5 min-w-5 items-center justify-center text-xs leading-none rounded-full bg-[var(--border-color)] px-1',
+          isWrong
+            ? 'text-[var(--border-color)]'
+            : 'text-[var(--secondary-color)]'
+        )}
+      >
+        {index + 1}
+      </span>
+    </button>
+  );
+});
+
+OptionButton.displayName = 'OptionButton';
 
 interface PickGameProps {
   isHidden: boolean;
@@ -84,7 +128,6 @@ const PickGame = ({ isHidden }: PickGameProps) => {
     () => Object.fromEntries(
       selectedRomaji
         .map((key, i) => [key, selectedKana[i]])
-        .slice()
         .reverse()
     ),
     [selectedRomaji, selectedKana]
@@ -321,72 +364,32 @@ const PickGame = ({ isHidden }: PickGameProps) => {
       {/* First row - always 3 options */}
       <div className="flex flex-row w-full gap-5 sm:gap-0 sm:justify-evenly">
         {topRow.map((variantChar: string, i: number) => (
-          <button
-            ref={(elem) => {
+          <OptionButton
+            key={variantChar + i}
+            variantChar={variantChar}
+            index={i}
+            isWrong={wrongSelectedAnswers.includes(variantChar)}
+            onClick={handleOptionClick}
+            buttonRef={(elem) => {
               buttonRefs.current[i] = elem;
             }}
-            key={variantChar + i}
-            type="button"
-            disabled={wrongSelectedAnswers.includes(variantChar)}
-            className={clsx(
-              'text-5xl font-semibold pb-6 pt-3 w-full sm:w-1/5 flex flex-row justify-center items-center gap-1 relative',
-              buttonBorderStyles,
-              'border-b-4 ',
-              wrongSelectedAnswers.includes(variantChar) &&
-                'hover:bg-[var(--card-color)] hover:border-[var(--border-color)] text-[var(--border-color)]',
-              !wrongSelectedAnswers.includes(variantChar) &&
-                'text-[var(--secondary-color)] border-[var(--secondary-color)]/50 hover:border-[var(--secondary-color)]'
-            )}
-            onClick={() => handleOptionClick(variantChar)}
-          >
-            <span>{variantChar}</span>
-            <span
-              className={clsx(
-                'absolute right-4 top-1/2 -translate-y-1/2 hidden lg:inline-flex h-5 min-w-5 items-center justify-center text-xs leading-none rounded-full bg-[var(--border-color)] px-1',
-                wrongSelectedAnswers.includes(variantChar)
-                  ? 'text-[var(--border-color)]'
-                  : 'text-[var(--secondary-color)]'
-              )}
-            >
-              {i + 1}
-            </span>
-          </button>
+          />
         ))}
       </div>
       {/* Second row - progressively fills with 1-3 additional options */}
       {bottomRow.length > 0 && (
         <div className="flex flex-row w-full gap-5 sm:gap-0 sm:justify-evenly">
           {bottomRow.map((variantChar: string, i: number) => (
-            <button
-              ref={(elem) => {
+            <OptionButton
+              key={variantChar + i}
+              variantChar={variantChar}
+              index={3 + i}
+              isWrong={wrongSelectedAnswers.includes(variantChar)}
+              onClick={handleOptionClick}
+              buttonRef={(elem) => {
                 buttonRefs.current[3 + i] = elem;
               }}
-              key={variantChar + i}
-              type="button"
-              disabled={wrongSelectedAnswers.includes(variantChar)}
-              className={clsx(
-                'text-5xl font-semibold pb-6 pt-3 w-full sm:w-1/5 flex flex-row justify-center items-center gap-1 relative',
-                buttonBorderStyles,
-                'border-b-4 ',
-                wrongSelectedAnswers.includes(variantChar) &&
-                  'hover:bg-[var(--card-color)] hover:border-[var(--border-color)] text-[var(--border-color)]',
-                !wrongSelectedAnswers.includes(variantChar) &&
-                  'text-[var(--secondary-color)] border-[var(--secondary-color)]/50 hover:border-[var(--secondary-color)]'
-              )}
-              onClick={() => handleOptionClick(variantChar)}
-            >
-              <span>{variantChar}</span>
-              <span
-                className={clsx(
-                  'absolute right-4 top-1/2 -translate-y-1/2 hidden lg:inline-flex h-5 min-w-5 items-center justify-center text-xs leading-none rounded-full bg-[var(--border-color)] px-1',
-                  wrongSelectedAnswers.includes(variantChar)
-                    ? 'text-[var(--border-color)]'
-                    : 'text-[var(--secondary-color)]'
-                )}
-              >
-                {4 + i}
-              </span>
-            </button>
+            />
           ))}
         </div>
       )}
